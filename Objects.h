@@ -28,4 +28,18 @@ class Button{
         int getFlag();
         void btnMachine();
 };
+
+class Ultrasonic{
+    private:
+        int trig;
+        int echo;
+        int distancia;
+    public:
+        Ultrasonic(int aTrig,int aEcho);
+        int getTrig();
+        int getEcho();
+        int getDistancia();
+        void medicion();
+}   
+};
 #endif

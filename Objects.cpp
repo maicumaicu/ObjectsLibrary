@@ -6,11 +6,6 @@
 #define CONFIRMACION 1
 #define LIBERACION 2
 
-#define TICKS_BTN 25
-
-int ticks,lecturaBtn;
-#include <TimerOne.h>
-
 
 Led::Led(int aPin){
     this->pin = aPin;
@@ -47,21 +42,10 @@ void Led::pwmLed(int pwm){
 
 //------------------------------------------------------------------------------------------
 
-void tick() {
-  ticks++;
-}
-
 Button::Button(int aPin){
     this->pin = aPin;
     this->estado = 0;
     this->flag = 0;
-    setup();
-}
-
-void Button::setup(){
-    Timer1.initialize(1000);
-    Timer1.attachInterrupt(tick);
-    pinMode(pin,INPUT_PULLUP);
 }
 
 int Button::getPin(){
@@ -107,6 +91,38 @@ void Button::btnMachine(){
       }
       break;
   }
-
 }
 
+//--------------------------------------------------------------------------------
+
+Ultrasonic::Ultrasonic(int aTrig,int aEcho){
+    echo = aEcho;
+    trig = aTrig;
+    distancia = 0;
+}
+
+int Ultrasonic::getEcho(){
+  return echo;
+}
+
+int Ultrasonic::getTrig(){
+  return trig;
+}
+
+int Ultrasonic::getDistancia(){
+  return distancia;
+}
+
+void Ultrasonic::medicion(){
+  int t;
+  digitalWrite(trig, HIGH);
+  delayMicroseconds(10); 
+  digitalWrite(trig, LOW);
+  t = pulseIn(echo, HIGH); //obtenemos el ancho del pulso
+  distancia = (t/2)/29;   
+  
+  Serial.print("Distancia 1: ");
+  Serial.print(distancia);      //Enviamos serialmente el valor de la distancia
+  Serial.print("cm");
+  Serial.println(); 
+}
